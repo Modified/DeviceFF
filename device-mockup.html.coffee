@@ -93,7 +93,7 @@ module.exports=renderable (params)->
 					u=/URL=([^&]+)/.exec location.search
 					if u
 						url
-						.val u[0]
+						.val decodeURIComponent u[1]
 						.trigger 'change'
 
 					# Init size.
