@@ -15,8 +15,8 @@ module.exports=renderable (params)->
 			#??? h1 'Device Mockups'
 			div '.device',->
 				nav ->
-					text '⚒'
-					form action:'#',-> #??? Handle submit instead?
+					label '⚒'
+					form ->
 						select -> #??? Replace with widget like Chosen, if want to bother with custom sizes?
 							option 'iPad (768x1024)' # Regexp looks for "(_x_)".
 							option selected:yes,'iPhone 4 (320x480)'
@@ -46,6 +46,14 @@ module.exports=renderable (params)->
 			# Handle form.
 			coffeescript ->
 				$ ->
+					form=$ 'form'
+					.on 'submit',(ev)->ev.preventDefault()
+
+					# Dropdown/up.
+					$ 'nav>label'
+					.on 'click',->
+						form.toggle()
+
 					# Device select.
 					size=$ 'select'
 					.on 'change',->
@@ -59,6 +67,7 @@ module.exports=renderable (params)->
 						$ '.device'
 						.width dim[if o then 1 else 2] # Flip dimensions for landscape.
 						.height dim[if o then 2 else 1]
+						form.hide()
 
 					# Portrait/landscape toggle.
 					orient=$ 'button'
@@ -66,14 +75,16 @@ module.exports=renderable (params)->
 						if orient.text() is 'Portrait' then orient.text 'Landscape'
 						else orient.text 'Portrait'
 						size.trigger 'change'
+						form.hide()
 
 					#??? Drag to resize iframe?
 
 					# Edit URL.
 					url=$ '[name="URL"]'
-					.on 'submit',-> #??? .on 'change',-> #??? Throttled input instead?
+					.on 'change',-> #??? Throttled input instead?
 						$ 'iframe'
 						.attr src:url.val()
+						form.hide()
 
 					# Init.
 					size.trigger 'change'
