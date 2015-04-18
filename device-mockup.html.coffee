@@ -53,6 +53,9 @@ module.exports=renderable (params)->
 					$ 'nav>label'
 					.on 'click',->
 						form.toggle()
+					$ document
+					.on 'keyup',(ev)->
+						if ev.keyCode is 27 then form.hide()
 
 					# Device select.
 					size=$ 'select'
@@ -86,5 +89,12 @@ module.exports=renderable (params)->
 						.attr src:url.val()
 						form.hide()
 
-					# Init.
+					# Init URL.
+					u=/URL=([^&]+)/.exec location.search
+					if u
+						url
+						.val u[0]
+						.trigger 'change'
+
+					# Init size.
 					size.trigger 'change'
