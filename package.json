@@ -1,0 +1,27 @@
+{
+  "name": "MRAID-ad-PM",
+  "version": "0.1.0",
+  "description": "MRAID compliant gallery ad; pub thru PocketMath.",
+  "scripts": {
+    "start": "cake start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://priority@bitbucket.org/adience_team/ad-mraid-for-pocketmath.git"
+  },
+  "keywords": [
+    "MRAID"
+  ],
+  "author": "Ilan <ilan@decodecode.net>",
+  "license": "None",
+  "private": true,
+  "devDependencies": {
+    "cake": "~0.1.1",
+    "coffee-script": "~1.9.1",
+    "colors": "^1.0.3",
+    "http-server": "^0.8.0",
+    "stylus": "^0.50.0",
+    "teacup": "^1.2.0"
+  }
+}

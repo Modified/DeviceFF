@@ -1,0 +1,7 @@
+# For submission to PocketMath, don't let Apache (specifically, mod_pagespeed) mangle gallery.html when using "http://ads.adience.com/gallery/gallery.html?pm".
+RewriteEngine on
+RewriteCond %{QUERY_STRING} ^pm$
+RewriteRule gallery.html - [last,type=text/plain]
+
+# Allow CORS, so can AJAX to tracker during development from localhost, and viewport-units-buggyfill is reloading stylesheet.
+Header set Access-Control-Allow-Origin "*"
