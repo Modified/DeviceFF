@@ -13,35 +13,34 @@ module.exports=renderable (params)->
 			link rel:'stylesheet',href:'device-mockup.css' #??? Inline everything!
 		body ->
 			#??? h1 'Device Mockups'
+			form ->
+				select -> #??? Replace with widget like Chosen, if want to bother with custom sizes?
+					option 'iPad (768x1024)' # Regexp looks for "(_x_)".
+					option selected:yes,'iPhone 4 (320x480)'
+					option 'iPhone 5 (320x568)'
+					option 'iPhone 6 (375x667)'
+					option 'iPhone 6 Plus (414x736)'
+					option 'Nexus 4 (384x640)'
+					option 'Nexus 5 (360x640)'
+					option 'Nexus 7 (600x960)'
+					option 'Nexus 10 (800x1280)'
+				button type:'button','Landscape' #??? Meh; do it right: radios, or group of buttons widget.
+				input type:'text',placeholder:'URL',name:'URL'
+				###???
+				label ->
+					text 'URL'
+				###
+				#??? a 'Open in new tab (unframed)'
 			div '.device',->
-				nav ->
+				nav -> #??? Maybe move form back here dynamically?
 					label '⚒'
-					form ->
-						select -> #??? Replace with widget like Chosen, if want to bother with custom sizes?
-							option 'iPad (768x1024)' # Regexp looks for "(_x_)".
-							option selected:yes,'iPhone 4 (320x480)'
-							option 'iPhone 5 (320x568)'
-							option 'iPhone 6 (375x667)'
-							option 'iPhone 6 Plus (414x736)'
-							option 'Nexus 4 (384x640)'
-							option 'Nexus 5 (360x640)'
-							option 'Nexus 7 (600x960)'
-							option 'Nexus 10 (800x1280)'
-						button type:'button','Landscape' #??? Meh; do it right: radios, or group of buttons widget.
-						input type:'text',placeholder:'URL',name:'URL'
-						###???
-						label ->
-							text 'URL'
-						###
 
 				div '.screen',-> # Divitis? Yeah, but.
-					iframe src:'index.html',border:'0',frameborder:'0',scrolling:'0',marginwidth:'0',marginheight:'0' #??? Defaults?
+					iframe name:'app'
 
 			# Scripts.
 			script src:'//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'
-			coffeescript -> #??? CS adds some ugly unused boilerplate, so just use script and JS?
-				# Fallback to self-hosted if CDN…? Works around scheme-less URLs.
-				window.jQuery or document.write '<script src="lib/jquery-2.1.3.min.js">\x3c/script>'
+			script '''window.jQuery || document.write('<script src="lib/jquery-2.1.3.min.js"><\\/script>')''' # Fallback to local. # Fallback to self-hosted if CDN…? Works around scheme-less URLs.
 
 			# Handle form.
 			coffeescript ->
@@ -49,6 +48,7 @@ module.exports=renderable (params)->
 					form=$ 'form'
 					.on 'submit',(ev)->ev.preventDefault()
 
+					###??? Floated form instead of dropdown?
 					# Dropdown/up.
 					$ 'nav>label'
 					.on 'click',->
@@ -56,6 +56,7 @@ module.exports=renderable (params)->
 					$ document
 					.on 'keyup',(ev)->
 						if ev.keyCode is 27 then form.hide()
+					###
 
 					# Device select.
 					size=$ 'select'
@@ -70,7 +71,7 @@ module.exports=renderable (params)->
 						$ '.device'
 						.width dim[if o then 1 else 2] # Flip dimensions for landscape.
 						.height dim[if o then 2 else 1]
-						form.hide()
+						#??? form.hide()
 
 					# Portrait/landscape toggle.
 					orient=$ 'button'
@@ -78,7 +79,7 @@ module.exports=renderable (params)->
 						if orient.text() is 'Portrait' then orient.text 'Landscape'
 						else orient.text 'Portrait'
 						size.trigger 'change'
-						form.hide()
+						#??? form.hide()
 
 					#??? Drag to resize iframe?
 
@@ -87,7 +88,7 @@ module.exports=renderable (params)->
 					.on 'change',-> #??? Throttled input instead?
 						$ 'iframe'
 						.attr src:url.val()
-						form.hide()
+						#??? form.hide()
 
 					# Init URL.
 					u=/URL=([^&]+)/.exec location.search

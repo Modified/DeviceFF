@@ -10,7 +10,7 @@ require 'colors'
 task 'start','Build and run local web server',->build ->launch 'http-server',['--cors'] #??? watch instead of build!
 task 'run','Just run web server (don\'t rebuild)',->launch 'http-server',['--cors']
 ###
-task 'build','Compile/preprocess CS/Stylus, etc',->build ->console.log ':-)'.green
+task 'build','Compile/preprocess CS/Stylus, etc',->build ->console.log ':-)'.green.inverse
 #??? task 'dist','Build into ./dist for distribution to production',->
 #??? task 'watch','Continuously compile/preprocess CS/Stylus',->watch
 
@@ -18,15 +18,16 @@ task 'build','Compile/preprocess CS/Stylus, etc',->build ->console.log ':-)'.gre
 build=(next)-> #??? Build all environments at once!?
 	console.log 'Building for',process.env.NODE_ENV?.blue
 	#??? if typeof watch is 'function' then next=watch;watch=false
-	#??? build_styl watch,->build_cs watch,next
-	#??? build_cs ->
+	#??? build_styl watch,->build_coffee watch,next
+	#??? build_coffee ->
 	build_styl ->build_teacup next
 	#??? Inline CSS after compiling Teacup, using awk/file I/O and regexp, unless can make Stylus work within Teacup.
 # Compile CoffeeScript into JavaScript.
-build_cs=(next)-> #??? (watch,next)->
+build_coffee=(next)-> #??? (watch,next)->
 	#??? if typeof watch is 'function' then next=watch;watch=false
 	options=['--compile'] #??? ,'--map'] Disabled because serves wrong URL! #??? Map only in development?
 	if 'production' is process.env.NODE_ENV then options=options.concat ['--output','./dist']
+	options=options.concat ['--output','./dist']
 	options=options.concat [
 		'?.coffee' #???... et al! And combine! #??? Globbing doesn't work with spawn.
 		]
@@ -36,7 +37,7 @@ build_cs=(next)-> #??? (watch,next)->
 build_styl=(next)->
 	#??? if typeof watch is 'function' then next=watch;watch=false
 	options=['--compress'] #??? Map only in development? ,'--firebug' produces tons of junk!
-	if 'production' is process.env.NODE_ENV then options=options.concat ['--out','./dist']
+	options=options.concat ['--out','./dist'] #???if 'production' is process.env.NODE_ENV then
 	options=options.concat [
 		'device-mockup.styl'
 		]
@@ -44,7 +45,7 @@ build_styl=(next)->
 	launch 'stylus',options,next
 # Generate HTML from Teacup templates.
 build_teacup=(next)->
-	cmd='for f in *.html.coffee; do coffee -e "console.log (require \'./$f\')()" > ${f%%.coffee}; done' #??? UGLY hack!? # "./" for require to include cwd. #??? Errors shown, but can't tell which file. "for" return code uninteresting -- how to test "require" succeeded?!
+	cmd='for f in *.html.coffee; do coffee -e "console.log (require \'./$f\')()" > ./dist/${f%%.coffee}; done' #??? UGLY hack!? # "./" for require to include CWD. #??? Errors shown, but can't tell which file. "for" return code uninteresting -- how to test "require" succeeded?!
 	console.log 'exec'.cyan,cmd
 	#??? options=[]
 	exec cmd,(err,stdout,stderr)-> #??? DRY

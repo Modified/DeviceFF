@@ -2,32 +2,42 @@
 body
 	margin 0
 	padding 1rem
+form
+	display flex
+	flex-direction column //??? Use Flexbox helpers!
+	//box-shadow 2px 2px 12px #444 //??? DRY
+	body>&
+		float right
+		margin 0 0 1em 1em
+	.device &
+		//??? Use class .modal instead! display none // Initially hidden, collapsed.
+		background gray
+		position absolute
+		top 1em
+	>*
+		background lightgray
+		margin .2em
+		padding .2em
 iframe
+	display block
 	height 100%
 	width 100%
 	background white
-	display block
+	border none
 nav
+	display none //??? Unused now that form's floated?
 	position absolute
 	left 1em
 	top .5em
-	form
-		background gray
-		display none // Initially hidden, collapsed.
-		position absolute
-		top 1em
-		>*
-			background lightgray
-			margin .25em
-			padding .25em
 .device
 	background gray
 	border 1px solid slategray
 	border-radius 12px
-	box-shadow 4px 4px 12px gray
+	box-shadow 2px 2px 12px black
 	box-sizing content-box
 	padding 38px 8px
 	position relative
+	float left
 .screen
 	background black //???
 	height 100%
