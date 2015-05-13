@@ -26,6 +26,7 @@ module.exports=renderable (params)->
 					option 'Nexus 10 (800x1280)'
 				button type:'button','Landscape' #??? Meh; do it right: radios, or group of buttons widget.
 				input type:'text',placeholder:'URL',name:'URL'
+				a target:'_blank','Open without frame'
 				###???
 				label ->
 					text 'URL'
@@ -88,6 +89,8 @@ module.exports=renderable (params)->
 					.on 'change',-> #??? Throttled input instead?
 						$ 'iframe'
 						.attr src:url.val()
+						$ 'form a'
+						.attr href:url.val()
 						#??? form.hide()
 
 					# Init URL.
