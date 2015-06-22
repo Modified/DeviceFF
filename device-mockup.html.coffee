@@ -15,15 +15,15 @@ module.exports=renderable (params)->
 			#??? h1 'Device Mockups'
 			form ->
 				select -> #??? Replace with widget like Chosen, if want to bother with custom sizes?
-					option 'iPad (768x1024)' # Regexp looks for "(_x_)".
-					option selected:yes,'iPhone 4 (320x480)'
-					option 'iPhone 5 (320x568)'
-					option 'iPhone 6 (375x667)'
-					option 'iPhone 6 Plus (414x736)'
-					option 'Nexus 4 (384x640)'
-					option 'Nexus 5 (360x640)'
-					option 'Nexus 7 (600x960)'
-					option 'Nexus 10 (800x1280)'
+					option 'iPad (768⨉1024)' # Regexp looks for "(_⨉_)".
+					option selected:yes,'iPhone 4 (320⨉480)'
+					option 'iPhone 5 (320⨉568)'
+					option 'iPhone 6 (375⨉667)'
+					option 'iPhone 6 Plus (414⨉736)'
+					option 'Nexus 4 (384⨉640)'
+					option 'Nexus 5 (360⨉640)'
+					option 'Nexus 7 (600⨉960)'
+					option 'Nexus 10 (800⨉1280)'
 				button type:'button','Landscape' #??? Meh; do it right: radios, or group of buttons widget.
 				input type:'text',placeholder:'URL',name:'URL'
 				a target:'_blank','Open without frame'
@@ -65,7 +65,7 @@ module.exports=renderable (params)->
 						# Extract dimensions from device description.
 						t=$ 'option:selected'
 						.text()
-						dim=/\((\d+)x(\d+)\)/.exec t
+						dim=/\((\d+)⨉(\d+)\)/.exec t
 						# Orientation?
 						o=orient.text() isnt 'Portrait'
 						# Resize.
